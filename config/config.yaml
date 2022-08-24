@@ -1,0 +1,40 @@
+training_pipeline_confg:
+  pipeline_name: Restaurant
+  artifact_dir: artifact
+
+data_ingestion_config:
+  data_download_url: www.kaggle.com/datasets/himanshupoddar/zomato-bangalore-restaurants/downloads?datasetVersionNumber=1
+  raw_data_dir: raw_data
+  tgz_download__dir: tgz_data
+  ingested_dir : ingested_data
+  ingested_train_data: train
+  ingested_test_data: test
+
+data_validation_config:
+  schema_dir: config
+  schema_file_name: schema.yaml
+  report_file_name: report.json
+  report_page_file_name: report.html
+
+data_transformation_config:
+  add_bedroom_per_room: true
+  transformed_dir: transformed_data
+  transformed_train_dir: train
+  transformed_test_dir: test
+  preprocessing_dir: preprocessed
+  preprocessed_object_file_name: preprocessed.pkl
+  
+model_trainer_config:
+  trained_model_dir: trained_model
+  model_file_name: model.pkl
+  base_accuracy: 0.6
+  model_config_dir: config
+  model_config_file_name: model.yaml
+
+
+model_evaluation_config:
+  model_evaluation_file_name: model_evaluation.yaml
+  
+
+model_pusher_config:
+  model_export_dir: saved_models
