@@ -2,7 +2,7 @@ from collections
 from collections import namedtuple
 
 DataIngestionConfig = namedtuple("DataIngestion",["dataset_download_url","raw_data_dir",
-                                    "tgz_download_dir","ingested_train_dir","ingested_test_dir"])
+                                    "zip_download_dir","ingested_train_dir","ingested_test_dir"])
 
 
 DataValidationConfig = namedtuple("DataValidationConfig",["schema_file_path",
