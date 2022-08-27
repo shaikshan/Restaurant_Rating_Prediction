@@ -1,4 +1,5 @@
 from cgi import test
+from dataclasses import replace
 import zipfile
 from Restaurant.exception import RestaurantException
 from Restaurant.logger import logging
@@ -7,13 +8,11 @@ from Restaurant.entity.config_entity import DataIngestionConfig
 import os,sys
 from zipfile import ZipFile
 import numpy as np
-from six.moves import urllib
 import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
 import numpy as np
 from scipy import stats as st
-import requests
-import kaggle
+from Restaurant.util.util import replace
 from kaggle.api.kaggle_api_extended import KaggleApi
 class DataIngestion:
     def __init__(self,data_ingestion_config:DataIngestionConfig):
@@ -21,18 +20,6 @@ class DataIngestion:
         try:
             logging.info(f"{'>>'*20}Data Ingestion log started.{'<<'*20} ")
             self.data_ingestion_config = data_ingestion_config
-        except Exception as e:
-            raise RestaurantException(e,sys) from e
-    @staticmethod
-    def str_to_float(value:pd.DataFrame):
-        try:
-            if value=="NEW" or value=="-":
-                value = np.nan
-                return value
-            else:
-                value = str(value).split("/")
-                value = float(value[0])
-                return value
         except Exception as e:
             raise RestaurantException(e,sys) from e
     def download_restaurant_data(self)->str:
@@ -45,13 +32,14 @@ class DataIngestion:
 
             os.makedirs(zip_download_dir,exist_ok=True)
 
+            zip_file = os.path.basename(dataset_info)+".zip"
 
-            zip_file_path = os.path.join(zip_download_dir)
+            zip_file_path = os.path.join(zip_download_dir,zip_file)
 
             logging.info(f"Downloading file from {dataset_info} into:{[zip_file_path]}")
             api = KaggleApi()
             api.authenticate()
-            api.dataset_download_files(dataset_info,path=zip_file_path)
+            api.dataset_download_files(dataset_info,path=zip_download_dir)
             logging.info(f"File :{[zip_file_path]} has been downloaded successfully.")
             return zip_file_path
         except Exception as e:
@@ -85,7 +73,7 @@ class DataIngestion:
 
             restaurant_data_frame = pd.read_csv(restaurant_file_path)
             logging.info(f"Converting rate column from str to float")
-            restaurant_data_frame['rate'] = restaurant_data_frame['rate'].apply(str_to_float)
+            restaurant_data_frame['rate'] = restaurant_data_frame['rate'].apply(replace)
             logging.info(f"Converted rate column:[{restaurant_data_frame['rate'].loc[0]}]")
             
             restaurant_data_frame['rate'] = restaurant_data_frame['rate'].fillna(st.mode(restaurant_data_frame['rate'],axis=None,nan_policy='omit').mode[0])
@@ -93,7 +81,7 @@ class DataIngestion:
 
             restaurant_data_frame['extra'] = pd.cut(restaurant_data_frame["rate"],
                                                         bins=[0.0,1.0,2.0,3.0,5.0,np.inf],
-                                                        labels=[1,2,3,4,5,6])
+                                                        labels=[1,2,3,4,5])
 
             logging.info(f"Splitting data into train and test")
             strat_train_set = None
@@ -105,9 +93,9 @@ class DataIngestion:
                 strat_train_set = restaurant_data_frame.loc[train_ind].drop(['extra'],axis=1)
                 strat_test_set = restaurant_data_frame.loc[test_ind].drop(['extra'],axis=1)
 
-            train_file_path = os.join.path(self.data_ingestion_config.ingested_train_dir,file_name)
+            train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,file_name)
 
-            test_file_path = os.join.path(self.data_ingestion_config.ingested_test_dir,file_name)
+            test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,file_name)
 
             if strat_train_set is not None:
                 os.makedirs(self.data_ingestion_config.ingested_train_dir,exist_ok=True)
