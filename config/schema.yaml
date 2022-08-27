@@ -1,0 +1,20 @@
+columns:
+  url: object
+  address: object
+  name: object
+  online_order: object
+  book_table: object
+  rate: float64
+  votes: int64
+  phone: object
+  location: object
+  rest_type: object
+  dish_liked: object                     
+  cuisines: object                        
+  approx_cost(for two people): object     
+  reviews_list: object                   
+  menu_item: object                      
+  listed_in(type): object               
+  listed_in(city): object          
+
+
