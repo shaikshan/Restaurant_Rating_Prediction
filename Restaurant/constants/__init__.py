@@ -2,14 +2,16 @@
 from datetime import datetime
 import os,sys
 
-from Restaurant.logger import CURRENT_TIME_STAMP
 ROOT_DIR = os.getcwd()
+
+def get_current_time_stamp():
+    return f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
 
 CONFIG_DIR = "config"
 CONFIG_FILE_NAME = "config.yaml"
 CONFIG_FILE_PATH = os.path.join(ROOT_DIR,CONFIG_DIR,CONFIG_FILE_NAME)
 
-CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%M-%d-%H-%M:%S')}"
+CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%M-%d-%H-%M-%S')}"
 
 #TRAINING_PIPELINE_KEYS
 TRAINING_PIPELINE_CONFIG_KEY = "training_pipeline_config"
@@ -19,13 +21,12 @@ TRAINING_ARTIFACT_DIR_KEY = "artifact_dir"
 #DATA_INGESTION_KEYS
 DATA_INGESTION_CONFIG_KEY = "data_ingestion_config"
 DATA_INGESTION_ARTIFACT_DIR = "data_ingestion"
-DATA_DOWNLOAD_URL_KEY = "data_download_url"
+DATASET_INFO_KEY = "dataset_info"
 DATA_INGESTION_RAW_DATA_DIR_KEY = "raw_data_dir"
-DATA_INGESTION_ZIP_DOWNLOAD_DIR_KEY = "tgz_download__dir"
+DATA_INGESTION_ZIP_DOWNLOAD_DIR_KEY = "zip_download_dir"
 DATA_INGESTION_INGESTED_DIR_KEY = "ingested_dir"
 DATA_INGESTION_INGESTED_TRAIN_DATA_KEY = "ingested_train_data"
-DATA_INGESTION_INGESTED_TEST_DATA_KEY = "ingested_test_data    "
-
+DATA_INGESTION_INGESTED_TEST_DATA_KEY = "ingested_test_data"
 #DATA_VALIDATION_KEYS
 
 DATA_VALIDATION_CONFIG_KEY = "data_validation_config"

@@ -12,6 +12,9 @@ import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
 import numpy as np
 from scipy import stats as st
+import requests
+import kaggle
+from kaggle.api.kaggle_api_extended import KaggleApi
 class DataIngestion:
     def __init__(self,data_ingestion_config:DataIngestionConfig):
                         
@@ -32,21 +35,25 @@ class DataIngestion:
                 return value
         except Exception as e:
             raise RestaurantException(e,sys) from e
-    def download_restaurant_data(self,)->str:
+    def download_restaurant_data(self)->str:
         try:
             #extraction remote url to download dataset
-            download_url = self.data_ingestion_config.dataset_download_url
+            dataset_info = self.data_ingestion_config.dataset_info
 
             #folder location to download file
             zip_download_dir = self.data_ingestion_config.zip_download_dir
 
             os.makedirs(zip_download_dir,exist_ok=True)
-            restaurant_file_name = "archive.zip"
-            
-            zip_file_path = os.path.join(zip_download_dir,restaurant_file_name)
 
-            logging.info(f"Downloading file from {download_url} into:{[zip_file_path]}")
-            urllib.request.urlretrieve(download_url,zip_file_path)
+            
+            zip_file = "archive.zip"
+
+            zip_file_path = os.path.join(zip_download_dir,zip_file)
+
+            logging.info(f"Downloading file from {dataset_info} into:{[zip_file_path]}")
+            api = KaggleApi()
+            api.authenticate()
+            api.dataset_download_file(dataset_info,file_name="zomato")
             logging.info(f"File :{[zip_file_path]} has been downloaded successfully.")
             return zip_file_path
         except Exception as e:
@@ -61,7 +68,8 @@ class DataIngestion:
             os.makedirs(raw_data_dir,exist_ok=True)
 
             logging.info(f"Extracting:{zip_file_path} into dir:{raw_data_dir}")
-            with ZipFile(zip_file_path,"r") as zip:
+            
+            with ZipFile(zip_file_path,'r') as zip:
                 zip.extractall(path=raw_data_dir)
             logging.info(f"Extraction completed")
         except Exception as e:

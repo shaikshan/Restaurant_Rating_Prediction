@@ -1,11 +1,11 @@
-training_pipeline_confg:
+training_pipeline_config:
   pipeline_name: Restaurant
   artifact_dir: artifact
 
 data_ingestion_config:
-  data_download_url: https://www.kaggle.com/datasets/himanshupoddar/zomato-bangalore-restaurants/download?datasetVersionNumber=1
+  dataset_info: himanshupoddar/zomato-bangalore-restaurants 
   raw_data_dir: raw_data
-  zip_download__dir: zip_data
+  zip_download_dir: zip_data
   ingested_dir : ingested_data
   ingested_train_data: train
   ingested_test_data: test
