@@ -45,15 +45,13 @@ class DataIngestion:
 
             os.makedirs(zip_download_dir,exist_ok=True)
 
-            
-            zip_file = "archive.zip"
 
-            zip_file_path = os.path.join(zip_download_dir,zip_file)
+            zip_file_path = os.path.join(zip_download_dir)
 
             logging.info(f"Downloading file from {dataset_info} into:{[zip_file_path]}")
             api = KaggleApi()
             api.authenticate()
-            api.dataset_download_file(dataset_info,file_name="zomato")
+            api.dataset_download_files(dataset_info,path=zip_file_path)
             logging.info(f"File :{[zip_file_path]} has been downloaded successfully.")
             return zip_file_path
         except Exception as e:
