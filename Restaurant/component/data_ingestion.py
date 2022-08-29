@@ -12,7 +12,7 @@ import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
 import numpy as np
 from scipy import stats as st
-from Restaurant.util.util import replace
+from Restaurant.util.util import *
 from kaggle.api.kaggle_api_extended import KaggleApi
 class DataIngestion:
     def __init__(self,data_ingestion_config:DataIngestionConfig):
@@ -97,6 +97,10 @@ class DataIngestion:
 
             test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,file_name)
 
+            columns=['url','address','phone','reviews_list','menu_item']
+            strat_train_set = columns_removal(columns=columns,df=strat_train_set)
+            strat_test_set = columns_removal(columns=columns,df=strat_test_set)
+            
             if strat_train_set is not None:
                 os.makedirs(self.data_ingestion_config.ingested_train_dir,exist_ok=True)
                 logging.info(f"Exporting training dataset to file:[{train_file_path}]")

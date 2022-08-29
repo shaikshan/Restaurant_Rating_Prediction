@@ -1,8 +1,6 @@
+from cgi import test
 from email import message
-import imp
-from tkinter import E
-
-from evidently import dashboard
+from operator import index
 from Restaurant.logger import logging
 from Restaurant.exception import RestaurantException
 import os,sys
@@ -14,7 +12,7 @@ from evidently.model_profile.sections import DataDriftProfileSection
 from evidently.dashboard import Dashboard
 from evidently.dashboard.tabs import DataDriftTab
 import json
-
+from Restaurant.util.util import *
 
 class DataValidation:
     def __init__(self,data_ingestion_artifact:DataIngestionArtifact,
@@ -59,7 +57,66 @@ class DataValidation:
         except Exception as e:
             raise RestaurantException(e,sys) from e
 
+    def validate_dataset_schema(self)->bool:
+        try:
+            validation_status = None
+            schema_file_path = self.data_validation_config.schema_file_path
 
+            schema_file_info = read_yaml_file(schema_file_path)
+
+            schema_columns_info = schema_file_info['columns']
+
+            train_df,test_df = self.get_train_and_test_df()
+
+            train_columns_len = len(schema_columns_info) == len(train_df.columns)
+
+            test_columns_len = len(schema_columns_info) == len(test_df.columns)
+
+            equal_len = train_columns_len and test_columns_len
+
+            if not equal_len:
+                validation_status = equal_len
+                logging.info(f"Validating Schema of dataset:{validation_status}")
+                return validation_status
+            else:
+                validation_status = equal_len
+                logging.info(f"Validating Schema of dataset:{validation_status}")
+                return validation_status
+        except Exception as e:
+            raise RestaurantException(e,sys) from e
+
+    def column_name_check(self)->bool:
+        try:
+            schema_file_path = self.data_validation_config.schema_file_path
+            schema_file_content = read_yaml_file(schema_file_path)
+            schema_columns_info = schema_file_content['columns']
+            train_df,test_df = self.get_train_and_test_df()
+
+            validation = True
+            if len(schema_columns_info.keys())==len(train_df.columns):
+                i =0
+                for key in schema_columns_info.keys():
+                    if train_df.dtypes.index[i] != key:
+                        message = "Columns name is not found"
+                        logging.info(f"Validation of column names:{message}")
+                    i+= 1
+                logging.info(f"Validation status of train_df :{validation}")
+            if len(schema_columns_info.keys()) == len(test_df.columns):
+                j=0
+                for key in schema_columns_info.keys():
+                    if test_df.dtypes.index[j] != key:
+                        message = "Columns name is not found"
+                        logging.info(f"Validation of column names:{message}")
+                    j+=1
+                logging.info(f"Validation status of test_df:{validation}")
+                return validation
+            else:
+                logging.info(f"Length of train_df and test_df are not equal to schema_columns_keys len()")
+                logging.info(f"Validation Done:{validation}")
+                return validation
+        except Exception as e:
+            raise RestaurantException(e,sys) from e    
+        
     def get_save_data_drift_report(self):
         try:
             profile = Profile(sections=[DataDriftProfileSection()])
@@ -105,6 +162,8 @@ class DataValidation:
     def initiate_data_validation(self)->DataValidationArtifact:
         try:
             self.is_train_test_file_exists()
+            self.validate_dataset_schema()
+            self.column_name_check()
             self.is_data_drift_found()
 
             data_validation_artifact = DataValidationArtifact(

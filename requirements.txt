@@ -5,5 +5,6 @@ gunicorn
 Flask
 evidently
 dill
+matplotlib
 kaggle
 -e .

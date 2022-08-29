@@ -63,7 +63,7 @@ class Configuration:
             DATA_VALIDATION_ARTIFACT_DIR_NAME,
             self.time_stamp
             )
-            data_validation_config_info = self.config_info[DATA_INGESTION_CONFIG_KEY]
+            data_validation_config_info = self.config_info[DATA_VALIDATION_CONFIG_KEY]
             
             schema_file_path = os.path.join(ROOT_DIR,
             data_validation_config_info[DATA_VALIDATION_SCHEMA_DIR_KEY],

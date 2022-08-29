@@ -11,7 +11,13 @@ CONFIG_DIR = "config"
 CONFIG_FILE_NAME = "config.yaml"
 CONFIG_FILE_PATH = os.path.join(ROOT_DIR,CONFIG_DIR,CONFIG_FILE_NAME)
 
-CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%M-%d-%H-%M-%S')}"
+#SCHEMA FILE PATH
+SCHEMA_DIR = "config"
+SCHEMA_FILE_NAME = "schema.yaml"
+SCHEMA_FILE_PATH = os.path.join(ROOT_DIR,SCHEMA_DIR,SCHEMA_FILE_NAME)
+
+
+CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
 
 #TRAINING_PIPELINE_KEYS
 TRAINING_PIPELINE_CONFIG_KEY = "training_pipeline_config"
