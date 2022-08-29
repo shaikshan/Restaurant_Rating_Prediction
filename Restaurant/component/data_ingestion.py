@@ -84,6 +84,7 @@ class DataIngestion:
                                                         labels=[1,2,3,4,5])
 
             logging.info(f"Splitting data into train and test")
+
             strat_train_set = None
             strat_test_set = None
             

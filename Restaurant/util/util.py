@@ -81,3 +81,15 @@ def validate_dtype_of_column(self)->bool:
             return dtype_validation
         except Exception as e:
             raise RestaurantException(e,sys) from e
+
+
+count_lessthan_300m =None
+def handle(value):
+    try:
+        count_lessthan_300m = None
+        if value in count_lessthan_300m:
+            return 'others'
+        else:
+            return value
+    except Exception as e:
+        print(str(e))

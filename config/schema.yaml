@@ -8,11 +8,26 @@ columns:
   rest_type: object
   dish_liked: object                     
   cuisines: object                        
-  approx_cost(for two people): object                                             
+  approx_cost(for two people): float64                                           
   listed_in(type): object               
   listed_in(city): object 
       
 
+numerical_columns:
+  - rate
+  - votes
+  - approx_cost(for two people)
 
 
+categorical_columns:
+  - name
+  - online_order
+  - book_talble
+  - location
+  - rest_type
+  - dish_liked
+  - cuisines
+  - listed_in(type)
+  - listed_in(city)
 
+target_column: rate

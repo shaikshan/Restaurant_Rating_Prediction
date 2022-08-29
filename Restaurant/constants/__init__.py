@@ -41,3 +41,20 @@ DATA_VALIDATION_SCHEMA_FILE_NAME_KEY = "schema_file_name"
 DATA_VALIDATION_REPORT_FILE_NAME_KEY = "report_file_name"
 DATA_VALIDATION_REPORT_PAGE_FILE_NAME_KEY = "report_page_file_name"
 DATA_VALIDATION_ARTIFACT_DIR_NAME = 'data_validation'
+
+
+#DATA TRANSFORMATION_KEYS
+
+DATA_TRANSFORMATION_CONFIG_KEY = "data_transformation_config"
+DATA_TRANSFORMATION_ARTIFACT_DIR = "data_transformation"
+DATA_TRANSFORMATION_DIR_NAME_KEY = "transformed_dir"
+DATA_TRANSFORMATION_TRAIN_DIR_NAME_KEY = "transformed_train_dir"
+DATA_TRANSFORMATION_TEST_DIR_NAME_KEY = "transformed_test_dir"
+DATA_TRANSFORMATION_PREPROCESSING_DIR_KEY = "preprocessing_dir"
+DATA_TRANSFORMATION_PREPROCESSING_FILE_NAME_KEY = "preprocessed_object_file_name"
+
+
+NUMERICAL_COLUMNS_KEY = "numerical_columns"
+CATEGORICAL_COLUMNS_KEY = "categorical_columns"
+
+TARGET_COLUMN_KEY = "target_column"
