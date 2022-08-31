@@ -28,6 +28,12 @@ class Pipeline:
         except Exception as e:
             raise RestaurantException(e,sys) from e
 
+    def start_data_transformation(self):
+        try:
+            pass
+        except Exception as e:
+            raise RestaurantException(e,sys) from e
+
     def run_pipeline(self):
         try:
             data_ingestion_artifact = self.start_data_ingestion()
