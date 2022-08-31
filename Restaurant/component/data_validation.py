@@ -1,6 +1,4 @@
-from cgi import test
-from email import message
-from operator import index
+
 from Restaurant.logger import logging
 from Restaurant.exception import RestaurantException
 import os,sys
@@ -115,7 +113,7 @@ class DataValidation:
                 logging.info(f"Validation Done:{validation}")
                 return validation
         except Exception as e:
-            raise RestaurantException(e,sys) from e    
+            raise RestaurantException(e,sys) from e
         
     def get_save_data_drift_report(self):
         try:

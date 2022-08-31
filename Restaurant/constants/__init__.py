@@ -58,3 +58,5 @@ NUMERICAL_COLUMNS_KEY = "numerical_columns"
 CATEGORICAL_COLUMNS_KEY = "categorical_columns"
 
 TARGET_COLUMN_KEY = "target_column"
+
+DATASET_SCHEMA_COLUMNS_KEY = 'columns'

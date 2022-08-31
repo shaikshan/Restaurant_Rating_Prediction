@@ -61,27 +61,66 @@ class DataIngestion:
         except Exception as e:
             raise RestaurantException(e,sys) from e
 
+    def get_restaurant_df(self):
+        try:
+            raw_data_dir = self.data_ingestion_config.raw_data_dir
+            
+            file_name = os.listdir(raw_data_dir)[0]
+
+            restaurant_file_path = os.path.join(raw_data_dir,file_name)
+            logging.info(f"Reading csv file:[{restaurant_file_path}]")
+
+            restaurant_data_frame = pd.read_csv(restaurant_file_path)
+            logging.info(f"Converting rate column from str to float")
+
+            restaurant_data_frame['rate'] = restaurant_data_frame['rate'].apply(replace)
+            logging.info(f"Converted rate column:[{restaurant_data_frame['rate'].loc[0]}]")
+
+            restaurant_data_frame["rate"] = restaurant_data_frame['rate'].fillna(st.mode(restaurant_data_frame['rate'],axis=None,nan_policy='omit').mode[0])
+            logging.info(f"Filling Nan values:[{restaurant_data_frame['rate'].isnull().sum()}]")
+
+            restaurant_data_frame['Rate'] = restaurant_data_frame['rate']
+            logging.info(f"Creating Rate column")
+
+            restaurant_data_frame.drop(columns=['rate'],axis=1,inplace=True)
+            
+            return restaurant_data_frame     
+        except Exception as e:
+            raise RestaurantException(e,sys) from e
+
     def split_data_as_train_test(self)->DataIngestionArtifact:
         try:
             raw_data_dir = self.data_ingestion_config.raw_data_dir
 
             file_name = os.listdir(raw_data_dir)[0]
 
-            restaurant_file_path = os.path.join(raw_data_dir,file_name)
+            #restaurant_file_path = os.path.join(raw_data_dir,file_name)
 
-            logging.info(f"Reading csv file:[{restaurant_file_path}]")
+            #logging.info(f"Reading csv file:[{restaurant_file_path}]")
 
-            restaurant_data_frame = pd.read_csv(restaurant_file_path)
-            logging.info(f"Converting rate column from str to float")
-            restaurant_data_frame['rate'] = restaurant_data_frame['rate'].apply(replace)
-            logging.info(f"Converted rate column:[{restaurant_data_frame['rate'].loc[0]}]")
+            #restaurant_data_frame = pd.read_csv(restaurant_file_path)
+            #logging.info(f"Converting rate column from str to float")
+            #restaurant_data_frame['rate'] = restaurant_data_frame['rate'].apply(replace)
+            #logging.info(f"Converted rate column:[{restaurant_data_frame['rate'].loc[0]}]")
             
-            restaurant_data_frame['rate'] = restaurant_data_frame['rate'].fillna(st.mode(restaurant_data_frame['rate'],axis=None,nan_policy='omit').mode[0])
-            logging.info(f"Filling Nan values:{[restaurant_data_frame['rate'].isnull().sum()]}")
+            #restaurant_data_frame['rate'] = restaurant_data_frame['rate'].fillna(st.mode(restaurant_data_frame['rate'],axis=None,nan_policy='omit').mode[0])
+            #logging.info(f"Filling Nan values:{[restaurant_data_frame['rate'].isnull().sum()]}")
 
-            restaurant_data_frame['extra'] = pd.cut(restaurant_data_frame["rate"],
+            #restaurant_data_frame['Rate'] = restaurant_data_frame['rate']
+            #logging.info(f"Creating Rate column")
+            
+            #restaurant_data_frame = restaurant_data_frame.drop('rate',axis=1,inplace=True)
+            #logging.info(f"Droping rate column")
+
+            restaurant_data_frame = self.get_restaurant_df()
+            
+            restaurant_data_frame['extra'] = pd.cut(restaurant_data_frame["Rate"],
                                                         bins=[0.0,1.0,2.0,3.0,5.0,np.inf],
                                                         labels=[1,2,3,4,5])
+                                                
+            logging.info(f"Shape of restaurant_dataframe:{restaurant_data_frame.shape}")
+            restaurant_data_frame = restaurant_data_frame.drop_duplicates()
+            logging.info(f"Shape of restaurant_dataframe:{restaurant_data_frame.shape}")
 
             logging.info(f"Splitting data into train and test")
 
@@ -100,7 +139,9 @@ class DataIngestion:
 
             columns=['url','address','phone','reviews_list','menu_item']
             strat_train_set = columns_removal(columns=columns,df=strat_train_set)
+            logging.info(f"Removing columns:{columns}")
             strat_test_set = columns_removal(columns=columns,df=strat_test_set)
+            logging.info(f"Removing columns :{columns}")
             
             if strat_train_set is not None:
                 os.makedirs(self.data_ingestion_config.ingested_train_dir,exist_ok=True)

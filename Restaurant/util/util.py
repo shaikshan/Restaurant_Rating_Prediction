@@ -5,6 +5,7 @@ from Restaurant.logger import logging
 from Restaurant.exception import RestaurantException
 import pandas as pd
 import dill
+from Restaurant.constants import *
 
 def read_yaml_file(file_path:str):
     """
@@ -140,13 +141,33 @@ def validate_dtype_of_column(self)->bool:
             raise RestaurantException(e,sys) from e
 
 
-count_lessthan_300m =None
-def handle(value):
+def count(value):
     try:
-        count_lessthan_300m = None
-        if value in count_lessthan_300m:
-            return 'others'
+        if type(value) == float:
+            value = 0
+            return value
         else:
+            value = len(str(value).split(","))
             return value
     except Exception as e:
-        print(str(e))
+        raise RestaurantException(e,sys) from e
+
+def load_data(dataframe:pd.DataFrame, schema_file_path: str):
+    try:
+        datatset_schema = read_yaml_file(schema_file_path)
+
+        schema = datatset_schema[DATASET_SCHEMA_COLUMNS_KEY]
+
+        error_messgae = ""
+        
+        for column in dataframe.columns:
+            if column in list(schema.keys()):
+                dataframe[column].astype(schema[column])
+            else:
+                error_messgae = f"{error_messgae} \nColumn: [{column}] is not in the schema."
+        if len(error_messgae) > 0:
+            raise Exception(error_messgae)
+        return dataframe
+
+    except Exception as e:
+        raise RestaurantException(e,sys) from e
