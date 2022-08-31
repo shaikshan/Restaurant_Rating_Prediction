@@ -171,3 +171,29 @@ def load_data(dataframe:pd.DataFrame, schema_file_path: str):
 
     except Exception as e:
         raise RestaurantException(e,sys) from e
+
+
+def fill_na(value,median_):
+    try:
+        if type(value) == float:
+            value = str(value)
+        if value == "nan":
+            return float(median_)
+        else:
+            return float(value)
+    except Exception as e:
+        raise RestaurantException(e,sys) from e
+
+def cap_data(df):
+    try:
+        for col in df.columns:
+            print("capping the ",col)
+            if (((df[col].dtype)=='float64') | ((df[col].dtype)=='int64')):
+                percentiles = df[col].quantile([0.01,0.99]).values
+                df[col][df[col] <= percentiles[0]] = percentiles[0]
+                df[col][df[col] >= percentiles[1]] = percentiles[1]
+            else:
+                df[col]=df[col]
+        return df
+    except Exception as e:
+        raise RestaurantException(e,sys) from e
