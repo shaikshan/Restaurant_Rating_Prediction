@@ -76,7 +76,7 @@ class DataIngestion:
             restaurant_data_frame['rate'] = restaurant_data_frame['rate'].apply(replace)
             logging.info(f"Converted rate column:[{restaurant_data_frame['rate'].loc[0]}]")
 
-            restaurant_data_frame["rate"] = restaurant_data_frame['rate'].fillna(st.mode(restaurant_data_frame['rate'],axis=None,nan_policy='omit').mode[0])
+            restaurant_data_frame["rate"] = restaurant_data_frame['rate'].fillna(np.mean(restaurant_data_frame['rate']))
             logging.info(f"Filling Nan values:[{restaurant_data_frame['rate'].isnull().sum()}]")
 
             restaurant_data_frame['Rate'] = restaurant_data_frame['rate']
@@ -115,8 +115,8 @@ class DataIngestion:
             restaurant_data_frame = self.get_restaurant_df()
             
             restaurant_data_frame['extra'] = pd.cut(restaurant_data_frame["Rate"],
-                                                        bins=[0.0,1.0,2.0,3.0,5.0,np.inf],
-                                                        labels=[1,2,3,4,5])
+                                                        bins=[0.0,1.5,3.0,4.5,np.inf],
+                                                        labels=[1,2,3,4])
                                                 
             logging.info(f"Shape of restaurant_dataframe:{restaurant_data_frame.shape}")
             restaurant_data_frame = restaurant_data_frame.drop_duplicates()

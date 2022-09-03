@@ -40,7 +40,7 @@ class DataTransformation:
             numerical_columns = dataset_schema[NUMERICAL_COLUMNS_KEY]
             categorical_columns = dataset_schema[CATEGORICAL_COLUMNS_KEY]
 
-            num_pipeline = Pipeline(steps=[('imputer',SimpleImputer(strategy='median')),
+            num_pipeline = Pipeline(steps=[('imputer',SimpleImputer(strategy='mean')),
                                     ('scaler',StandardScaler())])
 
             cat_pipeline = Pipeline(steps=[('impute',SimpleImputer(strategy="most_frequent")),
@@ -79,18 +79,22 @@ class DataTransformation:
 
             train_df['online_order'] = train_df['online_order'].astype('category')
             train_df['book_table']= train_df['book_table'].astype('category')
+            train_df['listed_in(type)'] = train_df['listed_in(type)'].astype('category')
+            train_df['location'] = train_df['location'].astype('category')
             logging.info(f"changing dtype of online_order,book_table into category")
 
             
             test_df['online_order'] = test_df['online_order'].astype('category')
             test_df['book_table']= test_df['book_table'].astype('category')
+            test_df['listed_in(type)'] = test_df['listed_in(type)'].astype('category')
+            test_df['location'] = test_df['location'].astype('category')
             logging.info(f"changing dtype of online_order,book_table into category")
 
-            train_df['dish_liked'] = train_df['dish_liked'].apply(count)
+            #train_df['rest_type'] = train_df['rest_type'].apply(count)
             train_df['cuisines'] = train_df['cuisines'].apply(count)
             logging.info(f"changing dish_liked,cuisines into int64 by decoding it into numbers")
 
-            test_df['dish_liked'] = test_df['dish_liked'].apply(count)
+            #test_df['rest_type'] = test_df['rest_type'].apply(count)
             test_df['cuisines'] = test_df['cuisines'].apply(count)
             logging.info(f"changing dish_liked,cuisines into int64 by decoding it into numbers")
 
@@ -99,7 +103,7 @@ class DataTransformation:
             test_df = load_data(dataframe=test_df,schema_file_path=schema_file_path)
 
             #columns remove
-            columns = ['name','location','rest_type','listed_in(type)','listed_in(city)']
+            columns = ['name','rest_type','location','dish_liked','listed_in(city)']
 
             train_df = columns_removal(columns=columns,df=train_df)
             logging.info(f"Removing columns of list:{columns}")
@@ -136,6 +140,7 @@ class DataTransformation:
 
             input_features_test_df = test_df.drop(columns=[target_column_name],axis=1)
             target_feature_test_df = test_df[target_column_name]
+
 
             logging.info(f"Applying preprocessing object on training dataframe and testing dataframe")
             input_features_train_arr = preprocessing_obj.fit_transform(input_features_train_df)
