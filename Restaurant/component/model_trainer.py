@@ -1,4 +1,4 @@
-from Restaurant.entity.model_factory import GridSearchBestModel, MetricInfoArtifact, ModelFactory, evaluate_classification_model
+from Restaurant.entity.model_factory import GridSearchBestModel, MetricInfoArtifact, ModelFactory, evaluate_regression_model
 from Restaurant.exception import RestaurantException
 from Restaurant.logger import logging
 from Restaurant.entity.artifact_entity import DataTransformationArtifact,ModelTrainerArtifact
@@ -73,7 +73,7 @@ class ModelTrainer:
             
             model_list = [model.best_model for model in grid_searched_best_model_list]
             logging.info(f"Evaluation all trained model on training and testing dataset both")
-            metric_info:MetricInfoArtifact = evaluate_classification_model(model_list=model_list,
+            metric_info:MetricInfoArtifact = evaluate_regression_model(model_list=model_list,
                                                                             X_train=x_train,
                                                                             y_train=y_train,
                                                                             X_test=x_test,

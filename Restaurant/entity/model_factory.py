@@ -156,7 +156,7 @@ def get_sample_model_config_yaml_file(export_dir:str):
 class ModelFactory:
     def __init__ (self,model_config_path:str = None,):
         try:
-            self.config:dict = ModelFactory.read_parames(model_config_path)
+            self.config:dict = ModelFactory.read_params(model_config_path)
 
             self.grid_search_cv_module:str = self.config[GRID_SEARCH_KEY][MODULE_KEY]
             self.grid_search_class_name:str = self.config[GRID_SEARCH_KEY][CLASS_KEY]
@@ -232,7 +232,7 @@ class ModelFactory:
             grid_search_best_model = GridSearchBestModel(model_serial_number=initialized_model.model_serial_number,
                                                             model=initialized_model.model,
                                                             best_model=grid_search_cv.best_estimator_,
-                                                            best_parameters=grid_search_cv.best_parmas_,
+                                                            best_parameters=grid_search_cv.best_params_,
                                                             best_score=grid_search_cv.best_score_)
             return grid_search_best_model
         except Exception as e:
