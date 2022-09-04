@@ -46,6 +46,7 @@ class DataTransformation:
             cat_pipeline = Pipeline(steps=[('impute',SimpleImputer(strategy="most_frequent")),
                                         ('one_hot_encoder',OneHotEncoder()),
                                         ('scaler',StandardScaler(with_mean=False))])
+
             logging.info(f"Categorical columns: {categorical_columns}")
             logging.info(f"Numerical columns: {numerical_columns}")
 
@@ -81,14 +82,14 @@ class DataTransformation:
             train_df['book_table']= train_df['book_table'].astype('category')
             train_df['listed_in(type)'] = train_df['listed_in(type)'].astype('category')
             train_df['location'] = train_df['location'].astype('category')
-            logging.info(f"changing dtype of online_order,book_table into category")
+            logging.info(f"changing 'object' dtype into 'category'")
 
             
             test_df['online_order'] = test_df['online_order'].astype('category')
             test_df['book_table']= test_df['book_table'].astype('category')
             test_df['listed_in(type)'] = test_df['listed_in(type)'].astype('category')
             test_df['location'] = test_df['location'].astype('category')
-            logging.info(f"changing dtype of online_order,book_table into category")
+            logging.info(f"changing 'object' dtype into 'category'")
 
             #train_df['rest_type'] = train_df['rest_type'].apply(count)
             train_df['cuisines'] = train_df['cuisines'].apply(count)

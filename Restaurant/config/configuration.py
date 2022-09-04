@@ -137,6 +137,23 @@ class Configuration:
             return model_trainer_config
         except Exception as e:
             raise RestaurantException(e,sys) from e
+    
+    def get_model_evaluation_config(self):
+        try:
+            model_evaluation_config_info = self.config_info[MODEL_EVALUATION_CONFIG_KEY]
+            artifact_dir = self.training_pipeline_config.artifact_dir
+            
+            model_evaluation_file_name = os.path.join(artifact_dir,
+            model_evaluation_config_info[MODEL_EVALUATION_ARTIFACT_DIR],
+            model_evaluation_config_info[MODEL_EVALUATION_FILE_NAME_KEY])
+
+            model_evaluation_config = ModelEvaluationConfig(model_evaluated_file_path=model_evaluation_file_name,
+                                                            time_stamp=self.time_stamp)
+
+            logging.info(f"ModelEvaluationConfig:{ model_evaluation_config}")
+            return model_evaluation_config
+        except Exception as e:
+            raise RestaurantException(e,sys) from e
 
     def get_training_pipeline_config(self)->TrainingPipelineConfig:
         try:
