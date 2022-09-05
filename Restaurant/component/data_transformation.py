@@ -1,6 +1,3 @@
-from tkinter import E
-from unicodedata import category
-
 from sklearn import preprocessing
 from Restaurant.exception import RestaurantException
 from Restaurant.logger import logging
@@ -13,7 +10,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler,OneHotEncoder
 from Restaurant.constants import *
 from Restaurant.util.util import *
-
+from Restaurant.Cleaning.Autoclean import Autoclean
 
 
 
@@ -70,64 +67,13 @@ class DataTransformation:
             test_df = pd.read_csv(test_file_path)
             logging.info(f"Loading train_df,and test_df")
 
-            train_df['approx_cost(for two people)'] = train_df['approx_cost(for two people)'].str.replace(",","")
-            train_df['approx_cost(for two people)'] = pd.to_numeric(train_df['approx_cost(for two people)'])
-            logging.info(f"changing approx column into float")
+            pipeline = Autoclean()
+           
+            train_df = pipeline.process(df=train_df,schema_path=schema_file_path)
+            logging.info(f"Cleaned train_df")
 
-            test_df['approx_cost(for two people)'] = test_df['approx_cost(for two people)'].str.replace(",","")
-            test_df['approx_cost(for two people)'] = pd.to_numeric(test_df['approx_cost(for two people)'])
-            logging.info(f"changing approx column into float")
-
-            train_df['online_order'] = train_df['online_order'].astype('category')
-            train_df['book_table']= train_df['book_table'].astype('category')
-            train_df['listed_in(type)'] = train_df['listed_in(type)'].astype('category')
-            train_df['location'] = train_df['location'].astype('category')
-            logging.info(f"changing 'object' dtype into 'category'")
-
-            
-            test_df['online_order'] = test_df['online_order'].astype('category')
-            test_df['book_table']= test_df['book_table'].astype('category')
-            test_df['listed_in(type)'] = test_df['listed_in(type)'].astype('category')
-            test_df['location'] = test_df['location'].astype('category')
-            logging.info(f"changing 'object' dtype into 'category'")
-
-            #train_df['rest_type'] = train_df['rest_type'].apply(count)
-            train_df['cuisines'] = train_df['cuisines'].apply(count)
-            logging.info(f"changing dish_liked,cuisines into int64 by decoding it into numbers")
-
-            #test_df['rest_type'] = test_df['rest_type'].apply(count)
-            test_df['cuisines'] = test_df['cuisines'].apply(count)
-            logging.info(f"changing dish_liked,cuisines into int64 by decoding it into numbers")
-
-            train_df = load_data(dataframe=train_df,schema_file_path=schema_file_path)
-
-            test_df = load_data(dataframe=test_df,schema_file_path=schema_file_path)
-
-            #columns remove
-            columns = ['name','rest_type','location','dish_liked','listed_in(city)']
-
-            train_df = columns_removal(columns=columns,df=train_df)
-            logging.info(f"Removing columns of list:{columns}")
-
-            test_df = columns_removal(columns=columns,df=test_df)
-            logging.info(f"Removing columns of list:{columns}")
-
-            #Outliers removing
-            train_df = cap_data(df=train_df)
-            logging.info("Removing Outliers test_df")
-
-            test_df = cap_data(df=test_df) 
-            logging.info("Removing Outliers of test_df")
-            
-            #Filling nan values
-            # med = round(train_df['approx_cost(for two people)'].median(skipna=True))
-            # logging.info(f"Filling values in approx column of train_df with median:{med}")
-
-            # train_df['approx_cost(for two people)'] = train_df['approx_cost(for two people)'].apply(fill_na,args=(med))
-
-
-            # test_med = round(test_df['approx_cost(for two people)'].median(skipna= True))
-            # logging.info(f"Filling nan values in approx column of test_df with median:{test_med}")
+            test_df = pipeline.process(df=test_df,schema_path=schema_file_path)
+            logging.info(f"Cleaned test_df")
 
             preprocessing_obj = self.get_preprocessing_object()
 

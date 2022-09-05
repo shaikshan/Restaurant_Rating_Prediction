@@ -1,3 +1,4 @@
+from sklearn import pipeline
 from Restaurant.exception import RestaurantException
 from Restaurant.logger import logging
 from Restaurant.entity.config_entity import ModelEvaluationConfig
@@ -5,6 +6,11 @@ from Restaurant.entity.artifact_entity import DataIngestionArtifact,DataValidati
 import os,sys
 from Restaurant.util.util import *
 from Restaurant.constants import *
+import numpy as np
+import pandas as pd
+from Restaurant.entity.model_factory import evaluate_regression_model
+from Restaurant.Cleaning.Autoclean import Autoclean
+
 class ModelEvaluation:
     def __init__(self,data_ingestion_artifact:DataIngestionArtifact,
                     data_validation_artifact:DataValidationArtifact,
@@ -86,11 +92,16 @@ class ModelEvaluation:
 
             train_df = pd.read_csv(train_file_path)
             test_df = pd.read_csv(test_file_path)
-            train_dataframe = load_data(dataframe=train_df,schema_file_path=schema_file_path)
 
-            test_dataframe = load_data(dataframe=test_df,schema_file_path=schema_file_path)
+            pipeline_ = Autoclean()
 
-            schema_file_content = read_yaml_file(file_path=schema_file_content)
+            train_dataframe = pipeline_.process(df=train_df,schema_path=schema_file_path)
+            logging.info("Auto Cleaning and Validating training dataset")
+
+            test_dataframe = pipeline_.process(df=test_df,schema_path=schema_file_path)
+            logging.info("Auto Cleaning and validating testing dataset")
+
+            schema_file_content = read_yaml_file(file_path=schema_file_path)
             target_column_name = schema_file_content[TARGET_COLUMN_KEY]
 
             #target column:
@@ -114,11 +125,39 @@ class ModelEvaluation:
                 self.update_evaluation_report(model_evaluation_artifact=model_evaluation_artifact)
                 logging.info(f"Model accepted. Model eval artifact{model_evaluation_artifact} created")
                 return model_evaluation_artifact
+
+            model_list = [model,trained_model_object]
+            
+            metric_info_artifact = evaluate_regression_model(model_list=model_list,
+                                                                X_train = train_dataframe,
+                                                                y_train=test_dataframe,
+                                                                X_test=train_target_arr,
+                                                                y_test=test_target_arr,
+                                                                base_accuracy=self.model_trainer_artifact.model_accuracy)
+            logging.info(f"Model evaluation completed. model metric artifact:{metric_info_artifact}")
+
+            if metric_info_artifact is None:
+                response = ModelEvaluationArtifact(is_model_accepted=False,
+                                                evaluated_model_path=trained_model_file_path)
+                logging.info(f"{response}")
+                return response
+            
+            if metric_info_artifact.index_number == 1:
+                model_evaluation_artifact = ModelEvaluationArtifact(is_model_accepted=True,
+                                                                    evaluated_model_path=trained_model_file_path)
+
+                self.update_evaluation_report(model_evaluation_artifact=model_evaluation_artifact)
+                logging.info(f"Model accepted. Model eval artifact {model_evaluation_artifact}")
+            
+            else:
+                logging.info(f"Trained Model is no better than existing model hence not accepting trained model")
+                model_evaluation_artifact = ModelEvaluationArtifact(is_model_accepted=False,
+                                                                            evaluated_model_path=trained_model_file_path)
+
+            return model_evaluation_artifact
+
         except Exception as e:
             raise RestaurantException(e,sys) from e
-
-
-
     
     def __del__(self):
         logging.info(f"{'>>'*30} ModelEvaluationCompleted {'<<'*30}")

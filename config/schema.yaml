@@ -6,7 +6,7 @@ columns:
   location: category
   rest_type: object
   dish_liked: object                     
-  cuisines: int64                     
+  cuisines: int64                
   approx_cost(for two people): float64                                           
   listed_in(type): category              
   listed_in(city): object

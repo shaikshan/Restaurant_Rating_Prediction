@@ -144,7 +144,7 @@ class Configuration:
             artifact_dir = self.training_pipeline_config.artifact_dir
             
             model_evaluation_file_name = os.path.join(artifact_dir,
-            model_evaluation_config_info[MODEL_EVALUATION_ARTIFACT_DIR],
+            MODEL_EVALUATION_ARTIFACT_DIR,
             model_evaluation_config_info[MODEL_EVALUATION_FILE_NAME_KEY])
 
             model_evaluation_config = ModelEvaluationConfig(model_evaluated_file_path=model_evaluation_file_name,

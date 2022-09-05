@@ -115,8 +115,6 @@ def validate_dtype_of_column(self)->bool:
 
             train_df,test_df = self.get_train_and_test_df()
 
-
-
             train_df['approx_cost(for two people)'] = train_df['approx_cost(for two people)'].str.replace(",","")
             test_df['approx_cost(for two people)'] = test_df['approx_cost(for two people)'].str.replace(",","")
             
@@ -194,6 +192,24 @@ def cap_data(df):
                 df[col][df[col] >= percentiles[1]] = percentiles[1]
             else:
                 df[col]=df[col]
+        return df
+    except Exception as e:
+        raise RestaurantException(e,sys) from e
+
+def handle_cost(value):
+    try:
+        if type(value) == str:
+            value = str(value).replace(',',"")
+            return float(value)
+    except Exception as e:
+        raise RestaurantException(e,sys) from e
+
+
+def cat(columns:list,df:pd.DataFrame):
+    try:
+        for column in df.columns:
+            if column in columns:
+                df[column]=df[column].astype('category')
         return df
     except Exception as e:
         raise RestaurantException(e,sys) from e

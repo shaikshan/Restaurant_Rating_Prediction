@@ -1,19 +1,16 @@
-from cgi import test
-from dataclasses import replace
-import zipfile
 from Restaurant.exception import RestaurantException
 from Restaurant.logger import logging
-from Restaurant.entity.artifact_entity import DataIngestionArtifact
 from Restaurant.entity.config_entity import DataIngestionConfig
 import os,sys
 from zipfile import ZipFile
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
-import numpy as np
 from scipy import stats as st
 from Restaurant.util.util import *
 from kaggle.api.kaggle_api_extended import KaggleApi
+from Restaurant.entity.artifact_entity import DataIngestionArtifact
+
 class DataIngestion:
     def __init__(self,data_ingestion_config:DataIngestionConfig):
                         

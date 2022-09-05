@@ -1,12 +1,14 @@
 from Restaurant.exception import RestaurantException
 from Restaurant.logger import logging
-from Restaurant.component.data_ingestion import DataIngestion 
+from Restaurant.component.data_ingestion import DataIngestion
 from Restaurant.config.configuration import Configuration
 import os,sys
-from Restaurant.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact,ModelTrainerArtifact
+from Restaurant.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact,\
+ModelTrainerArtifact,ModelEvaluationArtifact
 from Restaurant.component.data_validation import DataValidation
 from Restaurant.component.data_transformation import DataTransformation
 from Restaurant.component.model_trainer import ModelTrainer
+from Restaurant.component.model_evaluation import ModelEvaluation
 
 class Pipeline:
     def __init__(self,config:Configuration=Configuration()):
@@ -48,6 +50,21 @@ class Pipeline:
         except Exception as e:
             raise RestaurantException(e,sys) from e
 
+    def start_model_evaluation(self,data_ingestion_artifact:DataIngestionArtifact,
+                                data_validation_artifact:DataValidationArtifact,
+                                data_transformation_artifact:DataTransformationArtifact,
+                                model_trainer_artifact:ModelTrainerArtifact):
+        try:
+            model_evaluation = ModelEvaluation(data_ingestion_artifact=data_ingestion_artifact,
+                                                data_validation_artifact=data_validation_artifact,
+                                                data_transformation_artifact=data_transformation_artifact,
+                                                model_trainer_artifact=model_trainer_artifact,
+                                                model_evaluation_config = self.config.get_model_evaluation_config())
+
+            return model_evaluation.initiate_model_evaluation()
+        except Exception as e:
+            raise RestaurantException(e,sys) from e
+
     def run_pipeline(self):
         try:
             data_ingestion_artifact = self.start_data_ingestion()
@@ -56,6 +73,11 @@ class Pipeline:
                                                                             data_validation_artifact=data_validation_artifact)
             model_trainer = self.start_model_training(data_transformation_artifact=data_transformation_artifact)
 
-            return model_trainer
+            model_evaluation = self.start_model_evaluation(data_ingestion_artifact=data_ingestion_artifact,
+                                                            data_validation_artifact=data_validation_artifact,
+                                                            data_transformation_artifact=data_transformation_artifact,
+                                                            model_trainer_artifact=model_trainer)
+
+            return model_evaluation
         except Exception as e:
              raise RestaurantException(e,sys) from e
