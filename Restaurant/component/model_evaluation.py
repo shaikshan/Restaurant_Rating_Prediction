@@ -130,8 +130,8 @@ class ModelEvaluation:
             
             metric_info_artifact = evaluate_regression_model(model_list=model_list,
                                                                 X_train = train_dataframe,
-                                                                y_train=test_dataframe,
-                                                                X_test=train_target_arr,
+                                                                y_train=train_target_arr,
+                                                                X_test=test_dataframe,
                                                                 y_test=test_target_arr,
                                                                 base_accuracy=self.model_trainer_artifact.model_accuracy)
             logging.info(f"Model evaluation completed. model metric artifact:{metric_info_artifact}")

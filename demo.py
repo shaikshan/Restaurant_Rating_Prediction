@@ -6,8 +6,10 @@ from Restaurant.config.configuration import Configuration
 
 def main():
     try:
-        pipe = Pipeline()
-        pipe.run_pipeline()
+        config_path = os.path.join("config","config.yaml")
+        pipe = Pipeline(Configuration(config_file_path=config_path))
+        pipe.start()
+        logging.info("main function execution completed.")
     except Exception as e:
         logging.info(f"{e}")
         print(e)
