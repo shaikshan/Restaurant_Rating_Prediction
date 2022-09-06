@@ -81,3 +81,10 @@ MODEL_EVALUATION_ARTIFACT_DIR = "model_evaluation"
 BEST_MODEL_KEY = 'best_model'
 HISTORY_KEY = "history"
 MODEL_PATH_KEY = "model_path"
+
+#MODEL PUSHER
+MODEL_PUSHER_CONFIG_KEY = "model_pusher_config"
+MODEL_PUSHER_EXPORT_DIR_KEY = "model_export_dir"
+
+EXPERIMENT_DIR_NAME = "experiment"
+EXPERIMENT_FILE_NAME = "experiment.csv" 
