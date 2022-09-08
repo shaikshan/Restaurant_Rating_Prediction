@@ -6,7 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Folder
 saved_models
+
 # Folders
 artifact
 
@@ -114,7 +116,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-saved_models
+
 # Spyder project settings
 .spyderproject
 .spyproject
