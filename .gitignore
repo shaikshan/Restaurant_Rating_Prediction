@@ -6,9 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+saved_models
 # Folders
 artifact
-saved_models
+
 
 # Distribution / packaging
 .Python
