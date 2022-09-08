@@ -1,0 +1,145 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Restaurant Estimator</title>
+    {% endblock %}
+
+
+</head>
+<body>
+    {% block content %}
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-6 col-lg-6">
+
+
+            <form action="/predict" method="post">
+                <legend>Restaurant Estimation Form</legend>
+                <div class="mb-3">
+                    <label class="form-label">Online Order</label>
+                    <select class="form-control" name="online_order" placeholder="Enter a value of online_order"
+                        required >
+                        <option value="Yes">
+                            Yes
+                        </option>
+                        <option value="No">
+                            No
+                        </option>
+
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Book Table</label>
+                    <select class="form-control"  name="book_table" placeholder="Enter a value of book_table"
+                        required>
+                        <option value="Yes">
+                            Yes
+                        </option>
+                        <option value="No">
+                            No
+                        </option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Votes</label>
+                    <input class="form-control" type="text" name="votes" placeholder="Enter a value of votes"
+                        required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Cuisines</label>
+                    <input class="form-control" type="text" name="cuisines" placeholder="Enter a value of cuisines"
+                        required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Approx_Cost(for two people)</label>
+                    <input class="form-control" type="text" name="approx_cost(for two people)"
+                        placeholder="Enter a value of approx_cost(for two people)" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Listed In Type</label>
+                    <select class="form-control" name="listed_in(type)"
+                        placeholder="Enter a value of listed_in(type)" 
+                        required>
+                        <option value="Delivery">
+                            Delivery
+                        </option>
+                        <option value="Dine-out">
+                            Dine-out
+                        </option>
+                        <option value="Desserts">
+                            Desserts
+                        </option>
+                        <option value="Cafes">
+                            Cafes
+                        </option>
+                        <option value="Buffet">
+                            Buffet
+                        </option>
+                        <option value="Drinks & nightlife">
+                            Drinks & nightlife
+                        </option>
+                        <option value="Pubs and bars">
+                            Pubs and bars
+                        </option>
+                    </select>
+                </div>
+                <div class="mb-3">
+
+                    <input class="btn btn-primary" type="submit" value="Predict Rating of Restaurant" required />
+                </div>
+
+            </form>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-xs-6 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                Restaurant Rating
+                </div>
+                <div class="card-body">
+            {% if context['restaurant_data'] is not none %}
+            <table class="table table-striped">
+                <caption>Restaurant Rating Predicton </caption>
+                <tr>
+                    <th>Input Feature</th>
+                    <th>Feature Value</th>
+
+                </tr>
+                {% for column,value in context['restaurant_data'].items() %}
+
+
+
+                <tr>
+                    <td>{{column}}</td>
+                    <td>{{value[0]}}</td>
+                </tr>
+
+                {% endfor %}
+                <tr>
+
+                    <td>Rate </td>
+                    <td>
+                        {{ context['Rate'] }}
+                    </td>
+                </tr>
+            </table>
+
+            {% else %}
+        
+                <h5 class="card-title">Submit Form</h5>
+                <p class="card-text">Kindly provide necessary information to estimate Restaurant Ratings of zomato</p>
+                
+            
+
+            {% endif %}
+        </div>
+    </div>
+        </div>
+        {% endblock %}
+</body>
+
+</html>

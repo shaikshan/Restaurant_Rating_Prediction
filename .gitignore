@@ -8,6 +8,7 @@ __pycache__/
 
 # Folders
 artifact
+saved_models
 
 # Distribution / packaging
 .Python
