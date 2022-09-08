@@ -1,4 +1,5 @@
 import shutil
+from typing_extensions import TypeVarTuple
 from Restaurant.exception import RestaurantException
 from Restaurant.logger import logging
 from Restaurant.entity.config_entity import ModelPusherConfig
@@ -31,7 +32,7 @@ class ModelPusher:
             logging.info(
                 f"Trained model:[{evaluated_model_file_path}] is copied in export dir:[{export_model_file_path}]")
 
-            model_pusher_artifact = ModelPusherArtifact(export_model_file_path=export_model_file_path)
+            model_pusher_artifact = ModelPusherArtifact(export_model_file_path=export_model_file_path,is_model_pushed=True)
             
             logging.info(f"Model Pusher Artifact:{model_pusher_artifact}")
             
