@@ -10,7 +10,7 @@ from scipy import stats as st
 from Restaurant.util.util import *
 from kaggle.api.kaggle_api_extended import KaggleApi
 from Restaurant.entity.artifact_entity import DataIngestionArtifact
-
+from six.moves import urllib
 class DataIngestion:
     def __init__(self,data_ingestion_config:DataIngestionConfig):
                         
@@ -22,22 +22,22 @@ class DataIngestion:
     def download_restaurant_data(self)->str:
         try:
             #extraction remote url to download dataset
-            dataset_info = self.data_ingestion_config.dataset_info
+            dataset_download_url = self.data_ingestion_config.dataset_download_url
 
             #folder location to download file
             zip_download_dir = self.data_ingestion_config.zip_download_dir
 
             os.makedirs(zip_download_dir,exist_ok=True)
 
-            zip_file = os.path.basename(dataset_info)+".zip"
+            zip_file_name= "zomato-bangalore-restaurants.zip"
 
-            zip_file_path = os.path.join(zip_download_dir,zip_file)
+            zip_file_path = os.path.join(zip_download_dir,zip_file_name)
 
-            logging.info(f"Downloading file from {dataset_info} into:{[zip_file_path]}")
-            api = KaggleApi()
-            api.authenticate()
-            api.dataset_download_files(dataset_info,path=zip_download_dir)
-
+            logging.info(f"Downloading file from {dataset_download_url} into:{[zip_file_path]}")
+            # api = KaggleApi()
+            # api.authenticate()
+            # api.dataset_download_files(dataset_info,path=zip_download_dir)
+            urllib.request.urlretrieve(dataset_download_url,zip_file_path)
             logging.info(f"File :{[zip_file_path]} has been downloaded successfully.")
             return zip_file_path
         except Exception as e:

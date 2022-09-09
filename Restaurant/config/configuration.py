@@ -26,7 +26,7 @@ class Configuration:
             )
             data_ingestion_config_info = self.config_info[DATA_INGESTION_CONFIG_KEY]
 
-            dataset_info = data_ingestion_config_info[DATASET_INFO_KEY]
+            dataset_download_url = data_ingestion_config_info[DATASET_DOWNLOAD_URL_KEY]
             zip_download_dir = os.path.join(data_ingestion_artifact_dir,
             data_ingestion_config_info[DATA_INGESTION_ZIP_DOWNLOAD_DIR_KEY])
 
@@ -43,7 +43,7 @@ class Configuration:
             data_ingestion_config_info[DATA_INGESTION_INGESTED_TEST_DATA_KEY])
 
             data_ingestion_config = DataIngestionConfig(
-                dataset_info= dataset_info,
+                dataset_download_url= dataset_download_url,
                 zip_download_dir=zip_download_dir,
                 raw_data_dir=raw_data_dir,
                 ingested_train_dir=ingested_train_dir,

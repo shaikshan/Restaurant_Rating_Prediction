@@ -27,7 +27,7 @@ TRAINING_ARTIFACT_DIR_KEY = "artifact_dir"
 #DATA_INGESTION_KEYS
 DATA_INGESTION_CONFIG_KEY = "data_ingestion_config"
 DATA_INGESTION_ARTIFACT_DIR = "data_ingestion"
-DATASET_INFO_KEY = "dataset_info"
+DATASET_DOWNLOAD_URL_KEY = "dataset_download_url"
 DATA_INGESTION_RAW_DATA_DIR_KEY = "raw_data_dir"
 DATA_INGESTION_ZIP_DOWNLOAD_DIR_KEY = "zip_download_dir"
 DATA_INGESTION_INGESTED_DIR_KEY = "ingested_dir"
