@@ -8,7 +8,6 @@ import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
 from scipy import stats as st
 from Restaurant.util.util import *
-from kaggle.api.kaggle_api_extended import KaggleApi
 from Restaurant.entity.artifact_entity import DataIngestionArtifact
 from six.moves import urllib
 class DataIngestion:
