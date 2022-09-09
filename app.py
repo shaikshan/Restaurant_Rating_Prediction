@@ -1,5 +1,3 @@
-from crypt import methods
-from webbrowser import get
 from flask import Flask,request
 import sys
 from Restaurant.util.util import read_yaml_file,write_yaml_file

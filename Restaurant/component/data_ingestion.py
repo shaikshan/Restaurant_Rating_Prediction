@@ -37,6 +37,7 @@ class DataIngestion:
             api = KaggleApi()
             api.authenticate()
             api.dataset_download_files(dataset_info,path=zip_download_dir)
+
             logging.info(f"File :{[zip_file_path]} has been downloaded successfully.")
             return zip_file_path
         except Exception as e:
