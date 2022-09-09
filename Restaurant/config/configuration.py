@@ -1,4 +1,3 @@
-from msilib import schema
 from Restaurant.logger import logging
 from Restaurant.exception import RestaurantException
 import os,sys
