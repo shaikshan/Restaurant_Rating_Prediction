@@ -155,7 +155,7 @@ class Configuration:
             raise RestaurantException(e,sys) from e
     def get_model_pusher_config(self)->ModelPusherConfig:
         try:
-            time_stamp = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+            time_stamp = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
             model_pusher_config_info = self.config_info[MODEL_PUSHER_CONFIG_KEY]
             export_dir_path = os.path.join(ROOT_DIR,model_pusher_config_info[MODEL_PUSHER_EXPORT_DIR_KEY],
                                                 time_stamp)

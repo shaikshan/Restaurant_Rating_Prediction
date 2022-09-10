@@ -176,7 +176,7 @@ class Pipeline(Thread):
                 if os.path.exists(Pipeline.experiment_file_path):
                     experiment_report.to_csv(Pipeline.experiment_file_path,mode='a',index=False,header=False)
                 else:
-                    experiment_report.to_csv(Pipeline.experiment_file_path,mode='w',index=False,header=False)
+                    experiment_report.to_csv(Pipeline.experiment_file_path,mode='w',index=False,header=True)
             else:
                 print("First start experiment.")
         except Exception as e:

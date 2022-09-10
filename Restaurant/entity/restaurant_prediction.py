@@ -13,7 +13,7 @@ class RestaurantData:
                     cuisines:int,
                     approx_cost_for_two_people:float,
                     listed_in_type:str,
-                    Rate:float):
+                    Rate:float=None):
         try:
             self.online_order = online_order
             self.book_table = book_table
