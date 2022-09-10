@@ -28,7 +28,7 @@ class DataIngestion:
 
             os.makedirs(zip_download_dir,exist_ok=True)
 
-            zip_file_name= "zomato-bangalore-restaurants.zip"
+            zip_file_name= os.path.basename(dataset_download_url)
 
             zip_file_path = os.path.join(zip_download_dir,zip_file_name)
 
