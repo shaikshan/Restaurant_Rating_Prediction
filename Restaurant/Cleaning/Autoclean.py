@@ -21,7 +21,7 @@ class Autoclean:
 
             df = Autoclean.load_data(dataframe=df,schema_file_path=schema_path)
             
-            columns = ['name','rest_type','location','dish_liked','listed_in(city)']
+            columns = ['rest_type','listed_in(city)']
             df = Autoclean.columns_removal(columns=columns,df=df)
             logging.info(f"Removing columns from dataset columns:{columns}")
             

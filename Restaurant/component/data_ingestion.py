@@ -116,8 +116,8 @@ class DataIngestion:
                                                         labels=[1,2,3,4])
                                                 
             logging.info(f"Shape of restaurant_dataframe:{restaurant_data_frame.shape}")
-            restaurant_data_frame = restaurant_data_frame.drop_duplicates()
-            logging.info(f"Shape of restaurant_dataframe:{restaurant_data_frame.shape}")
+            # restaurant_data_frame = restaurant_data_frame.drop_duplicates()
+            # logging.info(f"Shape of restaurant_dataframe:{restaurant_data_frame.shape}")
 
             logging.info(f"Splitting data into train and test")
 
@@ -134,11 +134,11 @@ class DataIngestion:
 
             test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,file_name)
 
-            columns=['url','address','phone','reviews_list','menu_item']
-            strat_train_set = columns_removal(columns=columns,df=strat_train_set)
-            logging.info(f"Removing columns:{columns}")
-            strat_test_set = columns_removal(columns=columns,df=strat_test_set)
-            logging.info(f"Removing columns :{columns}")
+            # columns=['url','address','phone','reviews_list','menu_item']
+            # strat_train_set = columns_removal(columns=columns,df=strat_train_set)
+            # logging.info(f"Removing columns:{columns}")
+            # strat_test_set = columns_removal(columns=columns,df=strat_test_set)
+            # logging.info(f"Removing columns :{columns}")
             
             if strat_train_set is not None:
                 os.makedirs(self.data_ingestion_config.ingested_train_dir,exist_ok=True)
