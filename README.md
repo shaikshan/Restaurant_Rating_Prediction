@@ -13,7 +13,26 @@ cook the food for themselves.
 6.So that i can create a UI which gives the newly restaurants as well as old restaurants a chance to 
 serve their customers based on their ratings.
 ```
+# Installation Requirements:
 
+```
+1. pandas
+2. numpy
+3. flask
+4. matplotlib
+5. seaborn
+6. evidently
+7. gunicorn
+```
+# Tools used:
+
+```
+1. Vs code
+2. Jupyter Notebook
+3. GitHub
+4. Heroku
+5. Docker
+```
 # Flow of Pipeline
 ```
 1.Data Ingestion
@@ -100,3 +119,4 @@ Steps:
 
 1.We maintain a best model which is used for prediction 
 ```
+
