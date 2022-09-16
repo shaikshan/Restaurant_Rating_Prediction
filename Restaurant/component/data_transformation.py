@@ -19,7 +19,8 @@ from Restaurant.Cleaning.Autoclean import Autoclean
 class DataTransformation:
     def __init__(self,data_transformation_config:DataTransformationConfig,
                 data_ingestion_artifact:DataIngestionArtifact,
-                data_validation_artifact:DataValidationArtifact):
+                data_validation_artifact:DataValidationArtifact
+                ):
         try:
             logging.info(f"{'>>' * 30}Data Transformation log started.{'<<' * 30} ")
             self.data_transformation_config = data_transformation_config
@@ -27,7 +28,8 @@ class DataTransformation:
             self.data_validation_artifact = data_validation_artifact
         except Exception as e:
             raise RestaurantException(e,sys) from e
-
+    
+    # getting preprocessing object
     def get_preprocessing_object(self):
         try:
             schema_file_path = self.data_validation_artifact.schema_file_path
@@ -55,7 +57,8 @@ class DataTransformation:
             return preprocessing
         except Exception as e:
             raise RestaurantException(e,sys) from e
-
+    
+    # Data Tranformation
     def initiate_data_transformation(self)->DataTransformationArtifact:
         try:
             schema_file_path = self.data_validation_artifact.schema_file_path

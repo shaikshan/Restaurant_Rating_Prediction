@@ -21,7 +21,8 @@ class DataValidation:
             self.data_validation_config = data_validation_config
         except Exception as e:
             raise RestaurantException(e,sys) from e
-
+    
+    # Train Test DataFrame
     def get_train_and_test_df(self):
         try:
             train_df = pd.read_csv(self.data_ingestion_artifact.train_file_path)
@@ -30,6 +31,7 @@ class DataValidation:
         except Exception as e:
             raise RestaurantException(e,sys) from e
 
+    # Checking Train Test file path
     def is_train_test_file_exists(self)->bool:
         try:
             logging.info("Checking if training and test file is available")
@@ -55,6 +57,7 @@ class DataValidation:
         except Exception as e:
             raise RestaurantException(e,sys) from e
 
+    #Checking No: of columns
     def validate_dataset_schema(self)->bool:
         try:
             validation_status = None
@@ -83,6 +86,7 @@ class DataValidation:
         except Exception as e:
             raise RestaurantException(e,sys) from e
 
+    # Checking column names
     def column_name_check(self)->bool:
         try:
             schema_file_path = self.data_validation_config.schema_file_path
@@ -114,7 +118,8 @@ class DataValidation:
                 return validation
         except Exception as e:
             raise RestaurantException(e,sys) from e
-        
+
+    # Get and saving Data_Drift report  
     def get_save_data_drift_report(self):
         try:
             profile = Profile(sections=[DataDriftProfileSection()])
@@ -134,7 +139,8 @@ class DataValidation:
             return report
         except Exception as e:
             raise RestaurantException(e,sys) from e
-
+    
+    # Creation Data_Drift dashboard report:
     def save_data_drift_report(self):
         try:
             dashboard = Dashboard(tabs=[DataDriftTab()])
@@ -149,6 +155,7 @@ class DataValidation:
         except Exception as e:
             raise RestaurantException(e,sys) from e
     
+    # Checkin Data_Drift
     def is_data_drift_found(self)->bool:
         try:
             report = self.get_save_data_drift_report()
