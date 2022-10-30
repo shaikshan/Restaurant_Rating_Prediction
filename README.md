@@ -35,7 +35,6 @@ serve their customers based on their ratings.
 ```
 # Flow of Pipeline
 
-ML pipeline Flow.png
 
 ```
 1.Data Ingestion
