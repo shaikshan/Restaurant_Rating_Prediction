@@ -34,6 +34,9 @@ serve their customers based on their ratings.
 5. Docker
 ```
 # Flow of Pipeline
+
+ML pipeline Flow.png
+
 ```
 1.Data Ingestion
 2.Data Validation
@@ -43,10 +46,10 @@ serve their customers based on their ratings.
 6.Model push
 ```
 
+
 ## Data Ingestion of zomato:
 ```
 Steps:
-
 1. Ingest the data into our local system by url.
 2. The data file is zip file
 3. Extracting the zip file, contains zomato.csv file within it.
