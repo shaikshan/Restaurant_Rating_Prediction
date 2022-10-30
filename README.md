@@ -28,10 +28,13 @@ serve their customers based on their ratings.
 
 ```
 1. Vs code
-2. Jupyter Notebook
-3. GitHub
-4. Heroku
-5. Docker
+2. Python
+3. Jupyter Notebook
+4. GitHub
+5. Heroku
+6. Docker
+
+
 ```
 # Flow of Pipeline
 ![ML pipeline Flow](https://user-images.githubusercontent.com/97723040/198867928-1b58538f-d99c-4901-939d-f0318c936e0e.png)
@@ -121,4 +124,7 @@ Steps:
 
 1.We maintain a best model which is used for prediction 
 ```
+# Deployment Architecture
+
+![Deployment Flow](https://user-images.githubusercontent.com/97723040/198868573-618a8598-fb37-44ac-bc10-af11abb2cf45.png)
 
