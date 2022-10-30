@@ -34,7 +34,7 @@ serve their customers based on their ratings.
 5. Docker
 ```
 # Flow of Pipeline
-
+![ML pipeline Flow](https://user-images.githubusercontent.com/97723040/198867928-1b58538f-d99c-4901-939d-f0318c936e0e.png)
 
 ```
 1.Data Ingestion
